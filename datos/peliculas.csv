@@ -1,0 +1,13 @@
+id;titulo;idCategoria;anio;calificacion;numeroCalificaciones;numeroResenas
+1;El origen;1;2010;4.9;120;80
+2;Interestelar;1;2014;4.8;150;95
+3;Matrix;1;1999;4.7;140;85
+4;The Departed;2;2006;4.6;100;60
+5;La isla siniestra;3;2010;4.8;130;90
+6;El truco;2;2006;4.5;95;55
+7;Pulp Fiction;2;1994;4.7;180;110
+8;Avengers: Endgame;4;2019;4.4;200;130
+9;John Wick;4;2014;4.3;125;70
+10;Superbad;5;2007;4.1;80;45
+11;Get Out;6;2017;4.6;115;75
+12;El conjuro;6;2013;4.2;100;65

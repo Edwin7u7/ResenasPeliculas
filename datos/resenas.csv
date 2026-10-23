@@ -1,0 +1,10 @@
+usuario;idPelicula;calificacion;likes;contenido
+Ana;1;5;15;Una pelicula excelente, la historia te mantiene pensando hasta el final.
+Carlos;1;5;10;La narrativa es increible y la musica complementa muy bien la pelicula.
+Sofia;1;4;7;Una pelicula compleja pero muy entretenida.
+Ana;2;5;20;De las mejores peliculas de ciencia ficcion.
+Carlos;2;5;12;La fotografia y los efectos son impresionantes.
+Sofia;2;4;8;Muy buena pelicula, aunque es un poco larga.
+Ana;5;5;0;Una pelicula que te mantiene con dudas hasta el final.
+Carlos;5;5;0;Excelente actuacion y atmosfera.
+Sofia;5;4;0;Muy buena pelicula de suspenso.
