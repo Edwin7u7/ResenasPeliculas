@@ -25,7 +25,7 @@ public:
 };
 
 
-//Excepciones usadas por la estructura de StackVector
+//Excepciones usadas por Vector y StackList
 
 // No se pudo reservar memoria dinamica.
 class OutOfMemory : public std::exception {
@@ -35,13 +35,7 @@ public:
 	}
 };
 
-// push() sobre una pila llena.
-class Overflow : public std::exception {
-public:
-	virtual const char* what() const throw() {
-		return "Overflow";
-	}
-};
+//Excepciones usadas por la estructura StackList
 
 // top() o pop() sobre una pila vacia.
 class NoSuchElement : public std::exception {

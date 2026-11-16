@@ -7,28 +7,33 @@
 #include <iostream>
 using namespace std;
 
+
 class Categoria {
 private:
     int id;
     string nombre;
 
 public:
-    //Constructor por defecto 
-    Categoria() : id(0), nombre("") {}
+    //Constructor por defecto
+    // Mejor, promedio y peor caso: O(1). Espacio: O(1)
+    Categoria() : id(0), nombre("") {} // O(1)
 
     //Constructor
-    Categoria(int id, string nombre)
+    // Mejor, promedio y peor caso: O(1). Espacio: O(1)
+    Categoria(int id, string nombre) // O(1)
         : id(id), nombre(nombre) {}
 
     //Getters
-    int getId() const {
-        return id;
+    // Mejor, promedio y peor caso: O(1). Espacio: O(1)
+    int getId() const { // O(1)
+        return id; // O(1)
     }
 
-    string getNombre() const {
-        return nombre;
+    // Mejor, promedio y peor caso: O(1). Espacio: O(1)
+    string getNombre() const { // O(1)
+        return nombre; // O(1)
     }
-    
+
 };
 
 #endif

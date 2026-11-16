@@ -8,65 +8,71 @@ using namespace std;
 
 #include <iostream>
 #include <string>
-#include "StackVector.h"
-
-// Capacidad maxima de calificaciones por usuario
-const unsigned int MAX_CALIFICACIONES = 100;
+#include "StackList.h"
 
 class Usuario {
 private:
     int id;
     string nombre;
-    //Estructura de datos StackVector para guardar las calificaciones de las peliculas
-    StackVector<int> peliculasCalificadas;
+    //Estructura de datos dinamica StackList (pila sobre lista ligada) para
+    //guardar el historial de peliculas calificadas. Crece segun se necesite.
+    StackList<int> peliculasCalificadas;
 
 public:
     //Constructor por defecto
-    Usuario()
-        : id(0), nombre(""),
-          peliculasCalificadas(MAX_CALIFICACIONES) {}
+    // Mejor, promedio y peor caso: O(1)  (la pila empieza vacia)
+    // Espacio: O(1)
+    Usuario() // O(1)
+        : id(0), nombre("") {}
 
     //Constructor
-    Usuario(int id, string nombre)
-        : id(id), nombre(nombre),
-          peliculasCalificadas(MAX_CALIFICACIONES) {}
+    // Mejor, promedio y peor caso: O(1). Espacio: O(1)
+    Usuario(int id, string nombre) // O(1)
+        : id(id), nombre(nombre) {}
 
-    int getId() const {
-        return id;
+    // Mejor, promedio y peor caso: O(1). Espacio: O(1)
+    int getId() const { // O(1)
+        return id; // O(1)
     }
 
-    string getNombre() const {
-        return nombre;
+    // Mejor, promedio y peor caso: O(1). Espacio: O(1)
+    string getNombre() const { // O(1)
+        return nombre; // O(1)
     }
 
-    // Uso de la funcion push de stackVector: Tiempo O(1).
-    void registrarCalificacion(int idPelicula) {
-        peliculasCalificadas.push(idPelicula);
+    // Uso de la funcion push de StackList.
+    // Mejor, promedio y peor caso: O(1). Espacio: O(1)  (un nodo nuevo)
+    void registrarCalificacion(int idPelicula) { // O(1)
+        peliculasCalificadas.push(idPelicula); // O(1)
     }
+
     // Regresa una copia de la pila para consultarla sin modificar
-    // la original. Tiempo O(c), Espacio O(c).
-    StackVector<int> getPeliculasCalificadas() const {
-        return peliculasCalificadas;
+    // la original.
+    // Mejor, promedio y peor caso: O(n). Espacio: O(n)
+    StackList<int> getPeliculasCalificadas() const { // O(n)
+        return peliculasCalificadas; // O(n), copia todos los nodos
     }
 
     //Funcion para contar los elementos de la pila.
     // Se cuentan las calificaciones sacando todo de una copia de la pila
-    // Tiempo O(k) (k = calificaciones), Espacio O(MAX_CALIFICACIONES).
-    int numeroPeliculasCalificadas() const {
-        StackVector<int> copiaPeliculasCalificadas = peliculasCalificadas;
-        int total = 0;
+    // Mejor, promedio y peor caso: O(n). Espacio: O(n)
+    int numeroPeliculasCalificadas() const { // O(n)
+        StackList<int> copiaPeliculasCalificadas = peliculasCalificadas; // O(n)
+        int total = 0; // O(1)
 
-        while (!copiaPeliculasCalificadas.empty()) {
-            total++;
-            copiaPeliculasCalificadas.pop();
+        while (!copiaPeliculasCalificadas.empty()) { // O(n)
+            total++; // O(1)
+            copiaPeliculasCalificadas.pop(); // O(1)
         }
-        return total;
+        return total; // O(1)
     }
 
-    void mostrarInformacion() const {
-        cout << "ID: " << id << endl;
-        cout << "Usuario: " << nombre << endl;
-        cout << "Peliculas calificadas: "
+    // Mejor, promedio y peor caso: O(n)  (por numeroPeliculasCalificadas)
+    // Espacio: O(n)
+    void mostrarInformacion() const { // O(n)
+        cout << "ID: " << id << endl; // O(1)
+        cout << "Usuario: " << nombre << endl; // O(1)
+        cout << "Peliculas calificadas: " // O(n)
              << numeroPeliculasCalificadas() << endl;
     }
 };

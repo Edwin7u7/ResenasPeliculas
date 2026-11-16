@@ -22,13 +22,15 @@ private:
 
 public:
     //Constructor por defecto
-    Pelicula()
+    // Mejor, promedio y peor caso: O(1). Espacio: O(1)
+    Pelicula() // O(1)
         : id(0), titulo(""), categoria(), anio(0),
           calificacionPromedio(0.0), numeroCalificaciones(0),
           numeroResenas(0) {}
 
     //Constructor
-    Pelicula(int id, string titulo, Categoria categoria,
+    // Mejor, promedio y peor caso: O(1). Espacio: O(1)
+    Pelicula(int id, string titulo, Categoria categoria, // O(1)
              int anio, double calificacionPromedio = 0.0,
              int numeroCalificaciones = 0,
              int numeroResenas = 0)
@@ -39,58 +41,79 @@ public:
           calificacionPromedio(calificacionPromedio),
           numeroCalificaciones(numeroCalificaciones),
           numeroResenas(numeroResenas) {}
-    
+
     //Getters y Setters
-    int getId() const {
-        return id;
+    // Mejor, promedio y peor caso: O(1). Espacio: O(1)
+    int getId() const { // O(1)
+        return id; // O(1)
     }
 
-    string getTitulo() const {
-        return titulo;
+    // Mejor, promedio y peor caso: O(1). Espacio: O(1)
+    string getTitulo() const { // O(1)
+        return titulo; // O(1)
     }
 
-    string getCategoria() const {
-        return categoria.getNombre();
+    // Mejor, promedio y peor caso: O(1). Espacio: O(1)
+    string getCategoria() const { // O(1)
+        return categoria.getNombre(); // O(1)
     }
 
-    int getAnio() const {
-        return anio;
+    // Mejor, promedio y peor caso: O(1). Espacio: O(1)
+    int getAnio() const { // O(1)
+        return anio; // O(1)
     }
 
-    double getCalificacion() const {
-        return calificacionPromedio;
+    // Mejor, promedio y peor caso: O(1). Espacio: O(1)
+    double getCalificacion() const { // O(1)
+        return calificacionPromedio; // O(1)
     }
 
-    int getNumeroResenas() const {
-        return numeroResenas;
+    // Mejor, promedio y peor caso: O(1). Espacio: O(1)
+    int getNumeroResenas() const { // O(1)
+        return numeroResenas; // O(1)
     }
 
-    void agregarCalificacion(int calificacion) {
+    // Mejor, promedio y peor caso: O(1). Espacio: O(1)
+    int getNumeroCalificaciones() const { // O(1)
+        return numeroCalificaciones; // O(1)
+    }
 
-        double sumaActual =
+    // Mejor, promedio y peor caso: O(1). Espacio: O(1)
+    int getIdCategoria() const { // O(1)
+        return categoria.getId(); // O(1)
+    }
+
+    // Actualiza el promedio sin recorrer calificaciones anteriores:
+    // se recupera la suma con promedio * cantidad.
+    // Mejor, promedio y peor caso: O(1). Espacio: O(1)
+    void agregarCalificacion(int calificacion) { // O(1)
+
+        double sumaActual = // O(1)
             calificacionPromedio * numeroCalificaciones;
 
-        numeroCalificaciones++;
+        numeroCalificaciones++; // O(1)
 
-        calificacionPromedio =
+        calificacionPromedio = // O(1)
             (sumaActual + calificacion) /
             numeroCalificaciones;
     }
 
-    void agregarResena() {
-        numeroResenas++;
+    // Mejor, promedio y peor caso: O(1). Espacio: O(1)
+    void agregarResena() { // O(1)
+        numeroResenas++; // O(1)
     }
 
-    void mostrar() const {
-        cout << "ID: " << id << endl;
-        cout << "Titulo: " << titulo << endl;
-        cout << "Categoria: " << categoria.getNombre() << endl;
-        cout << "Anio: " << anio << endl;
-        cout << "Calificacion: "
+    // Mejor, promedio y peor caso: O(1). Espacio: O(1)
+    void mostrar() const { // O(1)
+        cout << "ID: " << id << endl; // O(1)
+        cout << "Titulo: " << titulo << endl; // O(1)
+        cout << "Categoria: " << categoria.getNombre() << endl; // O(1)
+        cout << "Anio: " << anio << endl; // O(1)
+        cout << "Calificacion: " // O(1)
              << calificacionPromedio << "/5" << endl;
-        cout << "Calificaciones: "
+        cout << "Calificaciones: " // O(1)
              << numeroCalificaciones << endl;
-        cout << "Resenas: "
+        cout << "Resenas: " // O(1)
              << numeroResenas << endl;
     }
 };

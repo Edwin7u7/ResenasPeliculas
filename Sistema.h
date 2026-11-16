@@ -9,20 +9,13 @@
 #include <string>
 #include <fstream>
 #include <stdexcept>
+#include <iomanip>
+#include <cstdio>
 #include "Vector.h"
 #include "Pelicula.h"
 #include "Usuario.h"
 #include "Reseña.h"
 #include "Categoria.h"
-
-
-// Estructuras de datos:
-//   - peliculas  : Vector<Pelicula>  (quicksort necesita acceso por indice)
-//   - usuarios   : Vector<Usuario>
-//   - resenas    : Vector<Resena>
-//   - categorias : Vector<Categoria>
-//   - Usuario::peliculasCalificadas : StackVector<int> (Usuario.h)
-
 
 class Sistema {
 private:
@@ -32,6 +25,11 @@ private:
     Vector<Categoria> categorias;
 
     int siguienteIdResena = 1;
+
+    // Carpeta de donde se cargaron los datos; ahi mismo se guardan.
+    string carpetaDatos = "datos";
+
+
 
     ///Inicio funciones Quicksort ///
 
@@ -93,16 +91,20 @@ private:
 
     // Busqueda secuencial
 
-    Pelicula* buscarPorId(int id) {
+    // Mejor caso: O(1)  (el elemento esta en la primera posicion)
+    // Caso promedio: O(n)
+    // Peor caso: O(n)  (no existe o esta en la ultima posicion)
+    // Espacio: O(1)
+    Pelicula* buscarPorId(int id) { // O(n)
 
-        for (unsigned int i = 0; i < peliculas.length(); i++) {
+        for (unsigned int i = 0; i < peliculas.length(); i++) { // O(n)
 
-            if (peliculas[i].getId() == id) {
-                return &peliculas[i];
+            if (peliculas[i].getId() == id) { // O(1)
+                return &peliculas[i]; // O(1)
             }
         }
 
-        return nullptr;
+        return nullptr; // O(1)
     }
 
 
@@ -110,16 +112,20 @@ private:
     // BUSCAR USUARIO
     // ========================================================
     // Busqueda secuencial
-    Usuario* buscarUsuario(int id) {
+    // Mejor caso: O(1)  (el elemento esta en la primera posicion)
+    // Caso promedio: O(n)
+    // Peor caso: O(n)  (no existe o esta en la ultima posicion)
+    // Espacio: O(1)
+    Usuario* buscarUsuario(int id) { // O(n)
 
-        for (unsigned int i = 0; i < usuarios.length(); i++) {
+        for (unsigned int i = 0; i < usuarios.length(); i++) { // O(n)
 
-            if (usuarios[i].getId() == id) {
-                return &usuarios[i];
+            if (usuarios[i].getId() == id) { // O(1)
+                return &usuarios[i]; // O(1)
             }
         }
 
-        return nullptr;
+        return nullptr; // O(1)
     }
 public:
     // Llama a quickSort con todo el vector de peliculas.
@@ -137,19 +143,21 @@ public:
     // MOSTRAR TODAS LAS PELICULAS
     // ========================================================
 
-    void mostrarPeliculas() {
+    // Mejor, promedio y peor caso: O(n)  (recorre todas las peliculas)
+    // Espacio: O(1)
+    void mostrarPeliculas() { // O(n)
 
-        cout << "\n========================================\n";
-        cout << "          LISTA DE PELICULAS\n";
-        cout << "========================================\n";
+        cout << "\n========================================\n"; // O(1)
+        cout << "          LISTA DE PELICULAS\n"; // O(1)
+        cout << "========================================\n"; // O(1)
 
-        for (unsigned int i = 0; i < peliculas.length(); i++) {
+        for (unsigned int i = 0; i < peliculas.length(); i++) { // O(n)
 
-            const Pelicula& pelicula = peliculas[i];
+            const Pelicula& pelicula = peliculas[i]; // O(1)
 
-            pelicula.mostrar();
+            pelicula.mostrar(); // O(1)
 
-            cout << "----------------------------------------\n";
+            cout << "----------------------------------------\n"; // O(1)
         }
     }
 
@@ -158,102 +166,104 @@ public:
     // BUSCAR PELICULA
     // ========================================================
 
-    void buscarPelicula() {
+    // Mejor, promedio y peor caso: O(n)  (siempre recorre todas las peliculas)
+    // Espacio: O(1)
+    void buscarPelicula() { // O(n)
 
-        int opcion;
+        int opcion; // O(1)
 
-        cout << "\nBuscar por:\n";
-        cout << "1. Nombre\n";
-        cout << "2. Categoria\n";
-        cout << "3. Anio\n";
-        cout << "Opcion: ";
-        cin >> opcion;
+        cout << "\nBuscar por:\n"; // O(1)
+        cout << "1. Nombre\n"; // O(1)
+        cout << "2. Categoria\n"; // O(1)
+        cout << "3. Anio\n"; // O(1)
+        cout << "Opcion: "; // O(1)
+        cin >> opcion; // O(1)
 
-        cin.ignore();
+        cin.ignore(); // O(1)
 
-        if (opcion == 1) {
+        if (opcion == 1) { // O(1)
 
-            string nombre;
+            string nombre; // O(1)
 
-            cout << "Nombre: ";
-            getline(cin, nombre);
+            cout << "Nombre: "; // O(1)
+            getline(cin, nombre); // O(1)
 
-            bool encontrada = false;
+            bool encontrada = false; // O(1)
 
-            for (unsigned int i = 0; i < peliculas.length(); i++) {
+            for (unsigned int i = 0; i < peliculas.length(); i++) { // O(n)
 
-                const Pelicula& pelicula = peliculas[i];
+                const Pelicula& pelicula = peliculas[i]; // O(1)
 
-                if (
+                if ( // O(1)
                     pelicula.getTitulo().find(nombre)
                     != string::npos
                 ) {
 
-                    pelicula.mostrar();
-                    cout << endl;
+                    pelicula.mostrar(); // O(1)
+                    cout << endl; // O(1)
 
-                    encontrada = true;
+                    encontrada = true; // O(1)
                 }
             }
 
-            if (!encontrada) {
-                cout << "No se encontraron peliculas.\n";
+            if (!encontrada) { // O(1)
+                cout << "No se encontraron peliculas.\n"; // O(1)
             }
         }
 
 
-        else if (opcion == 2) {
+        else if (opcion == 2) { // O(1)
 
-            string categoria;
+            string categoria; // O(1)
 
-            cout << "Categoria: ";
-            getline(cin, categoria);
+            cout << "Categoria: "; // O(1)
+            getline(cin, categoria); // O(1)
 
-            bool encontrada = false;
+            bool encontrada = false; // O(1)
 
-            for (unsigned int i = 0; i < peliculas.length(); i++) {
+            for (unsigned int i = 0; i < peliculas.length(); i++) { // O(n)
 
-                const Pelicula& pelicula = peliculas[i];
+                const Pelicula& pelicula = peliculas[i]; // O(1)
 
-                if (pelicula.getCategoria() == categoria) {
+                if (pelicula.getCategoria() == categoria) { // O(1)
 
-                    pelicula.mostrar();
-                    cout << endl;
+                    pelicula.mostrar(); // O(1)
+                    cout << endl; // O(1)
 
-                    encontrada = true;
+                    encontrada = true; // O(1)
                 }
             }
 
-            if (!encontrada) {
-                cout << "No se encontraron peliculas.\n";
+            if (!encontrada) { // O(1)
+                cout << "No se encontraron peliculas.\n"; // O(1)
             }
         }
 
 
-        else if (opcion == 3) {
+        else if (opcion == 3) { // O(1)
 
-            int anio;
+            int anio; // O(1)
 
-            cout << "Anio: ";
-            cin >> anio;
+            cout << "Anio: "; // O(1)
+            cin >> anio; // O(1)
 
-            bool encontrada = false;
+            bool encontrada = false; // O(1)
 
-            for (unsigned int i = 0; i < peliculas.length(); i++) {
+            for (unsigned int i = 0; i < peliculas.length(); i++) { // O(n)
 
-                const Pelicula& pelicula = peliculas[i];
+                const Pelicula& pelicula = peliculas[i]; // O(1)
 
-                if (pelicula.getAnio() == anio) {
+                if (pelicula.getAnio() == anio) { // O(1)
 
-                    pelicula.mostrar();
-                    cout << endl;
+                    pelicula.mostrar(); // O(1)
+                    cout << endl; // O(1)
 
-                    encontrada = true;
+                    encontrada = true; // O(1)
                 }
             }
 
-            if (!encontrada) {
-                cout << "No se encontraron peliculas.\n";
+            if (!encontrada) { // O(1)
+                cout << "No se encontraron peliculas.\n"; // O(1)
             }
         }
     }
@@ -263,56 +273,67 @@ public:
     // CREAR RESEÑA
     // ========================================================
 
-    void crearResena() {
+    // Mejor caso: O(1)  (el usuario y la pelicula estan en las primeras posiciones)
+    // Caso promedio: O(n)  (buscar al usuario y a la pelicula)
+    // Peor caso: O(n)
+    // Espacio: O(1)   (O(n) si el vector de resenas tiene que crecer)
+    void crearResena() { // O(n)
 
-        int idUsuario;
-        int idPelicula;
-        int calificacion;
-        string contenido;
+        int idUsuario; // O(1)
+        int idPelicula; // O(1)
+        int calificacion; // O(1)
+        string contenido; // O(1)
 
-        cout << "\nID del usuario: ";
-        cin >> idUsuario;
+        cout << "\nID del usuario: "; // O(1)
+        cin >> idUsuario; // O(1)
 
-        Usuario* usuario =
+        Usuario* usuario = // O(n)
             buscarUsuario(idUsuario);
 
-        if (usuario == nullptr) {
+        if (usuario == nullptr) { // O(1)
 
-            cout << "Usuario no encontrado.\n";
-            return;
+            cout << "Usuario no encontrado.\n"; // O(1)
+            return; // O(1)
         }
 
 
-        cout << "ID de la pelicula: ";
-        cin >> idPelicula;
+        cout << "ID de la pelicula: "; // O(1)
+        cin >> idPelicula; // O(1)
 
-        Pelicula* pelicula =
+        Pelicula* pelicula = // O(n)
             buscarPorId(idPelicula);
 
-        if (pelicula == nullptr) {
+        if (pelicula == nullptr) { // O(1)
 
-            cout << "Pelicula no encontrada.\n";
-            return;
+            cout << "Pelicula no encontrada.\n"; // O(1)
+            return; // O(1)
         }
 
 
-        cout << "Calificacion (1-5): ";
-        cin >> calificacion;
+        cout << "Calificacion (1-5): "; // O(1)
+        cin >> calificacion; // O(1)
 
-        if (calificacion < 1 || calificacion > 5) {
+        if (calificacion < 1 || calificacion > 5) { // O(1)
 
-            cout << "Calificacion invalida.\n";
-            return;
+            cout << "Calificacion invalida.\n"; // O(1)
+            return; // O(1)
         }
 
 
-        cin.ignore();
+        cin.ignore(); // O(1)
 
-        cout << "Escribe tu resena: ";
-        getline(cin, contenido);
+        cout << "Escribe tu resena: "; // O(1)
+        getline(cin, contenido); // O(1)
+
+        // Una resena vacia no se podria volver a cargar desde el archivo.
+        if (limpiar(contenido).empty()) { // O(1)
+
+            cout << "La resena no puede estar vacia.\n"; // O(1)
+            return; // O(1)
+        }
 
 
-        Resena nuevaResena(
+        Resena nuevaResena( // O(1)
             siguienteIdResena,
             contenido,
             usuario->getNombre(),
@@ -321,23 +342,18 @@ public:
         );
 
 
-        try {
-            usuario->registrarCalificacion(idPelicula);   // push a la pila
-        } catch (Overflow&) {
-            cout << "El usuario alcanzo el limite de calificaciones.\n";
-            return;
-        }
+        usuario->registrarCalificacion(idPelicula); // O(1), push a la pila
 
-        resenas.push_back(nuevaResena);
+        resenas.push_back(nuevaResena); // O(1)  
 
-        siguienteIdResena++;
+        siguienteIdResena++; // O(1)
 
-        pelicula->agregarResena();
+        pelicula->agregarResena(); // O(1)
 
-        pelicula->agregarCalificacion(calificacion);
+        pelicula->agregarCalificacion(calificacion); // O(1)
 
 
-        cout << "\nResena agregada correctamente.\n";
+        cout << "\nResena agregada correctamente.\n"; // O(1)
     }
 
 
@@ -345,28 +361,30 @@ public:
     // MOSTRAR RESEÑAS
     // ========================================================
 
-    void mostrarResenas() {
+    // Mejor, promedio y peor caso: O(n)  (recorre todas las resenas)
+    // Espacio: O(1)
+    void mostrarResenas() { // O(n)
 
-        int idPelicula;
+        int idPelicula; // O(1)
 
-        cout << "\nID de la pelicula: ";
-        cin >> idPelicula;
+        cout << "\nID de la pelicula: "; // O(1)
+        cin >> idPelicula; // O(1)
 
-        bool encontrada = false;
+        bool encontrada = false; // O(1)
 
-        for (unsigned int i = 0; i < resenas.length(); i++) {
+        for (unsigned int i = 0; i < resenas.length(); i++) { // O(n)
 
-            if (resenas[i].getIdPelicula() == idPelicula) {
+            if (resenas[i].getIdPelicula() == idPelicula) { // O(1)
 
-                resenas[i].mostrar();
+                resenas[i].mostrar(); // O(1)
 
-                encontrada = true;
+                encontrada = true; // O(1)
             }
         }
 
-        if (!encontrada) {
+        if (!encontrada) { // O(1)
 
-            cout << "Esta pelicula no tiene resenas.\n";
+            cout << "Esta pelicula no tiene resenas.\n"; // O(1)
         }
     }
 
@@ -375,25 +393,27 @@ public:
     // DAR LIKE
     // ========================================================
 
-    void darLike() {
+    // Mejor, promedio y peor caso: O(1) 
+    // Espacio: O(1)
+    void darLike() { // O(1)
 
-        int idResena;
+        int idResena; // O(1)
 
-        cout << "\nID de la resena: ";
-        cin >> idResena;
+        cout << "\nID de la resena: "; // O(1)
+        cin >> idResena; // O(1)
 
-        if (
+        if ( // O(1)
             idResena < 1 ||
             (unsigned int) idResena > resenas.length() ||
             resenas[idResena - 1].getId() != idResena
         ) {
-            cout << "Resena no encontrada.\n";
-            return;
+            cout << "Resena no encontrada.\n"; // O(1)
+            return; // O(1)
         }
 
-        resenas[idResena - 1].darLike();
+        resenas[idResena - 1].darLike(); // O(1)
 
-        cout << "Like agregado correctamente.\n";
+        cout << "Like agregado correctamente.\n"; // O(1)
     }
 
 
@@ -401,22 +421,26 @@ public:
     // RANKING DE PELICULAS
     // ========================================================
 
-    void mostrarRanking() {
+    // Mejor caso: O(n log n)
+    // Caso promedio: O(n log n)
+    // Peor caso: O(n^2)  (quicksort en su peor caso; imprimir es O(n))
+    // Espacio: O(log n) promedio, O(n) peor caso  (recursion del quicksort)
+    void mostrarRanking() { // O(n log n) promedio, O(n^2) peor
 
-        cout << "\n========================================\n";
-        cout << "          RANKING DE PELICULAS\n";
-        cout << "========================================\n";
+        cout << "\n========================================\n"; // O(1)
+        cout << "          RANKING DE PELICULAS\n"; // O(1)
+        cout << "========================================\n"; // O(1)
 
-        ordenarPeliculasPorCalificacionDescendente();
+        ordenarPeliculasPorCalificacionDescendente(); // O(n log n) promedio, O(n^2) peor
 
 
-        int posicion = 1;
+        int posicion = 1; // O(1)
 
-        for (unsigned int i = 0; i < peliculas.length(); i++) {
+        for (unsigned int i = 0; i < peliculas.length(); i++) { // O(n)
 
-            const Pelicula& pelicula = peliculas[i];
+            const Pelicula& pelicula = peliculas[i]; // O(1)
 
-            cout << posicion
+            cout << posicion // O(1)
                  << ". "
                  << pelicula.getTitulo()
                  << " - "
@@ -425,7 +449,7 @@ public:
                  << pelicula.getCalificacion()
                  << "/5\n";
 
-            posicion++;
+            posicion++; // O(1)
         }
     }
 
@@ -434,132 +458,179 @@ public:
     // VER PERFIL DE USUARIO
     // ========================================================
     // Muestra el historial de peliculas calificadas, guardado en un
-    // StackVector. Se recorre una COPIA de la pila con top() y pop(), asi
+    // StackList. Se recorre una COPIA de la pila con top() y pop(), asi
     // las peliculas salen de la mas reciente a la mas antigua (LIFO) y la
     // pila original del usuario no se modifica.
 
-    void verPerfilUsuario() {
+    // Mejor caso: O(1)  (el usuario esta al inicio y no tiene historial)
+    // Caso promedio: O(n^2)  (por cada pelicula del historial se busca
+    //   su titulo en el vector de peliculas, O(n) cada una)
+    // Peor caso: O(n^2)
+    // Espacio: O(n)  (copia de la pila del historial)
+    void verPerfilUsuario() { // O(n^2)
 
-        int idUsuario;
+        int idUsuario; // O(1)
 
-        cout << "\nID del usuario: ";
-        cin >> idUsuario;
+        cout << "\nID del usuario: "; // O(1)
+        cin >> idUsuario; // O(1)
 
-        Usuario* usuario =
+        Usuario* usuario = // O(n)
             buscarUsuario(idUsuario);
 
-        if (usuario == nullptr) {
+        if (usuario == nullptr) { // O(1)
 
-            cout << "Usuario no encontrado.\n";
-            return;
+            cout << "Usuario no encontrado.\n"; // O(1)
+            return; // O(1)
         }
 
-        cout << "\n========================================\n";
-        cout << "           PERFIL DE USUARIO\n";
-        cout << "========================================\n";
+        cout << "\n========================================\n"; // O(1)
+        cout << "           PERFIL DE USUARIO\n"; // O(1)
+        cout << "========================================\n"; // O(1)
 
-        usuario->mostrarInformacion();
+        usuario->mostrarInformacion(); // O(n), cuenta los elementos de la pila
 
-        StackVector<int> historial =
+        StackList<int> historial = // O(n), copia la pila
             usuario->getPeliculasCalificadas();
 
-        if (historial.empty()) {
+        if (historial.empty()) { // O(1)
 
-            cout << "\nAun no ha calificado peliculas.\n";
-            return;
+            cout << "\nAun no ha calificado peliculas.\n"; // O(1)
+            return; // O(1)
         }
 
         // top(): consulta la ultima pelicula calificada
-        Pelicula* ultima = buscarPorId(historial.top());
+        Pelicula* ultima = buscarPorId(historial.top()); // O(n)
 
-        if (ultima != nullptr) {
-            cout << "\nUltima pelicula calificada: "
+        if (ultima != nullptr) { // O(1)
+            cout << "\nUltima pelicula calificada: " // O(1)
                  << ultima->getTitulo() << endl;
         }
 
-        cout << "\nHistorial (de la mas reciente a la mas antigua):\n";
+        cout << "\nHistorial (de la mas reciente a la mas antigua):\n"; // O(1)
 
-        int posicion = 1;
+        int posicion = 1; // O(1)
 
-        while (!historial.empty()) {
+        while (!historial.empty()) { // O(n)
 
-            Pelicula* pelicula = buscarPorId(historial.top());
+            Pelicula* pelicula = buscarPorId(historial.top()); // O(n)
 
-            if (pelicula != nullptr) {
-                cout << posicion << ". "
+            if (pelicula != nullptr) { // O(1)
+                cout << posicion << ". " // O(1)
                      << pelicula->getTitulo() << endl;
-                posicion++;
+                posicion++; // O(1)
             }
 
-            historial.pop();
+            historial.pop(); // O(1)
         }
     }
 
 
+    // ========================================================
+    // GUARDAR DATOS EN ARCHIVOS
+    // ========================================================
+
+    // Mejor, promedio y peor caso: O(n)  (escribe cada vector una vez)
+    // Espacio: O(1)
+    bool guardarDatos(const string &carpeta) { // O(n)
+
+        cout << "\nGuardando datos en la carpeta '" << carpeta << "'...\n"; // O(1)
+
+        int totalCategorias = guardarCategorias(carpeta + "/categorias.csv"); // O(n)
+        int totalUsuarios   = guardarUsuarios(carpeta + "/usuarios.csv"); // O(n)
+        int totalPeliculas  = guardarPeliculas(carpeta + "/peliculas.csv"); // O(n)
+        int totalResenas    = guardarResenas(carpeta + "/resenas.csv"); // O(n)
+
+        if (totalCategorias < 0 || totalUsuarios < 0 || // O(1)
+            totalPeliculas < 0 || totalResenas < 0) {
+
+            cout << "No se pudieron guardar todos los datos.\n"; // O(1)
+            return false; // O(1)
+        }
+
+        cout << "Datos guardados. Categorias: " << totalCategorias // O(1)
+             << " | Usuarios: " << totalUsuarios
+             << " | Peliculas: " << totalPeliculas
+             << " | Resenas: " << totalResenas << endl;
+
+        return true; // O(1)
+    }
+
+
     //// Menu principal ////
-    void ejecutar() {
+    // Cada vuelta del menu cuesta lo que cueste la opcion elegida:
+    //   Mejor caso: O(1)  (dar like u opcion invalida)
+    //   Peor caso: O(n^2)  (ver perfil, o ranking en su peor caso)
+    // El ciclo se repite una vez por cada opcion que elige el usuario.
+    // Espacio: O(n)  (lo maximo es la copia de la pila en ver perfil)
+    void ejecutar() { // O(n^2) por cada opcion
 
-        int opcion;
+        int opcion; // O(1)
 
-        do {
+        do { // se repite una vez por cada opcion que elige el usuario
 
-            cout << "\n\n";
-            cout << "========================================\n";
-            cout << "       SISTEMA DE RESENAS DE PELICULAS\n";
-            cout << "========================================\n";
+            cout << "\n\n"; // O(1)
+            cout << "========================================\n"; // O(1)
+            cout << "       SISTEMA DE RESENAS DE PELICULAS\n"; // O(1)
+            cout << "========================================\n"; // O(1)
 
-            cout << "1. Mostrar peliculas\n";
-            cout << "2. Buscar pelicula\n";
-            cout << "3. Escribir resena\n";
-            cout << "4. Consultar resenas\n";
-            cout << "5. Dar like a una resena\n";
-            cout << "6. Ver ranking de peliculas\n";
-            cout << "7. Ver perfil de usuario\n";
-            cout << "0. Salir\n";
+            cout << "1. Mostrar peliculas\n"; // O(1)
+            cout << "2. Buscar pelicula\n"; // O(1)
+            cout << "3. Escribir resena\n"; // O(1)
+            cout << "4. Consultar resenas\n"; // O(1)
+            cout << "5. Dar like a una resena\n"; // O(1)
+            cout << "6. Ver ranking de peliculas\n"; // O(1)
+            cout << "7. Ver perfil de usuario\n"; // O(1)
+            cout << "8. Guardar cambios\n"; // O(1)
+            cout << "0. Salir\n"; // O(1)
 
-            cout << "\nSelecciona una opcion: ";
-            cin >> opcion;
+            cout << "\nSelecciona una opcion: "; // O(1)
+            cin >> opcion; // O(1)
 
 
-            switch (opcion) {
+            switch (opcion) { // O(1)
 
             case 1:
-                mostrarPeliculas();
-                break;
+                mostrarPeliculas(); // O(n)
+                break; // O(1)
 
             case 2:
-                buscarPelicula();
-                break;
+                buscarPelicula(); // O(n)
+                break; // O(1)
 
             case 3:
-                crearResena();
-                break;
+                crearResena(); // O(n)
+                break; // O(1)
 
             case 4:
-                mostrarResenas();
-                break;
+                mostrarResenas(); // O(n)
+                break; // O(1)
 
             case 5:
-                darLike();
-                break;
+                darLike(); // O(1)
+                break; // O(1)
 
             case 6:
-                mostrarRanking();
-                break;
+                mostrarRanking(); // O(n log n) promedio, O(n^2) peor
+                break; // O(1)
 
             case 7:
-                verPerfilUsuario();
-                break;
+                verPerfilUsuario(); // O(n^2)
+                break; // O(1)
+
+            case 8:
+                guardarDatos(carpetaDatos); // O(n)
+                break; // O(1)
 
             case 0:
-                cout << "\nSaliendo del programa...\n";
-                break;
+                preguntarGuardarAlSalir(); // O(n)
+                cout << "\nSaliendo del programa...\n"; // O(1)
+                break; // O(1)
 
             default:
-                cout << "\nOpcion invalida.\n";
+                cout << "\nOpcion invalida.\n"; // O(1)
             }
 
-        } while (opcion != 0);
+        } while (opcion != 0); // O(1)
     }
 
     // Cargar datos en los vectores desde archivos .csv
@@ -571,298 +642,328 @@ public:
     //     (archivo y numero de linea) y se omiten sin detener la carga.
 
 
-    bool cargarDatos(const string &carpeta) {
+    // Mejor, promedio y peor caso: O(n^2)  (es la suma de las 4 cargas)
+    // Espacio: O(n)  (todos los registros cargados)
+    bool cargarDatos(const string &carpeta) { // O(n^2)
 
-        cout << "Cargando datos desde la carpeta '" << carpeta << "'...\n";
+        carpetaDatos = carpeta; // O(1)
 
-        int totalCategorias = cargarCategorias(carpeta + "/categorias.csv");
-        int totalUsuarios   = cargarUsuarios(carpeta + "/usuarios.csv");
-        int totalPeliculas  = cargarPeliculas(carpeta + "/peliculas.csv");
-        int totalResenas    = cargarResenas(carpeta + "/resenas.csv");
+        cout << "Cargando datos desde la carpeta '" << carpeta << "'...\n"; // O(1)
 
-        cout << "Categorias: " << totalCategorias
+        int totalCategorias = cargarCategorias(carpeta + "/categorias.csv"); // O(n^2)
+        int totalUsuarios   = cargarUsuarios(carpeta + "/usuarios.csv"); // O(n^2)
+        int totalPeliculas  = cargarPeliculas(carpeta + "/peliculas.csv"); // O(n^2)
+        int totalResenas    = cargarResenas(carpeta + "/resenas.csv"); // O(n^2)
+
+        cout << "Categorias: " << totalCategorias // O(1)
              << " | Usuarios: " << totalUsuarios
              << " | Peliculas: " << totalPeliculas
              << " | Resenas: " << totalResenas << endl;
 
-        return totalPeliculas > 0;
+        return totalPeliculas > 0; // O(1)
     }
 
 private:
 
     // Quita espacios, tabuladores y '\r' al inicio y al final.
     // (Los archivos guardados en Windows terminan cada linea en "\r\n".)
-    string limpiar(const string &texto) {
+    // Mejor, promedio y peor caso: O(1)  
+    // Espacio: O(1)
+    string limpiar(const string &texto) { // O(1)
 
-        size_t inicio = texto.find_first_not_of(" \t\r\n");
+        size_t inicio = texto.find_first_not_of(" \t\r\n"); // O(1)
 
-        if (inicio == string::npos) {
-            return "";
+        if (inicio == string::npos) { // O(1)
+            return ""; // O(1)
         }
 
-        size_t fin = texto.find_last_not_of(" \t\r\n");
+        size_t fin = texto.find_last_not_of(" \t\r\n"); // O(1)
 
-        return texto.substr(inicio, fin - inicio + 1);
+        return texto.substr(inicio, fin - inicio + 1); // O(1)
     }
 
     // Separa una linea en campos usando ';'.
-    Vector<string> separar(const string &linea, unsigned int numCampos) {
+    // Mejor, promedio y peor caso: O(1) 
+    // Espacio: O(1)
+    Vector<string> separar(const string &linea, unsigned int numCampos) { // O(1)
 
-        Vector<string> campos;
-        size_t inicio = 0;
+        Vector<string> campos; // O(1)
+        size_t inicio = 0; // O(1)
 
-        while (campos.length() + 1 < numCampos) {
+        while (campos.length() + 1 < numCampos) { // O(1), a lo mucho 7 campos
 
-            size_t pos = linea.find(';', inicio);
+            size_t pos = linea.find(';', inicio); // O(1)
 
-            if (pos == string::npos) {
-                break;
+            if (pos == string::npos) { // O(1)
+                break; // O(1)
             }
 
-            campos.push_back(limpiar(linea.substr(inicio, pos - inicio)));
-            inicio = pos + 1;
+            campos.push_back(limpiar(linea.substr(inicio, pos - inicio))); // O(1)  
+            inicio = pos + 1; // O(1)
         }
 
-        campos.push_back(limpiar(linea.substr(inicio)));
+        campos.push_back(limpiar(linea.substr(inicio))); // O(1)  
 
-        return campos;
+        return campos; // O(1)
     }
 
     // Convierte texto a entero. Lanza excepcion si no es un numero
     
-    int aEntero(const string &texto) {
+    // Mejor, promedio y peor caso: O(1)
+    // Espacio: O(1)
+    int aEntero(const string &texto) { // O(1)
 
-        size_t usados = 0;
-        int valor = stoi(texto, &usados);
+        size_t usados = 0; // O(1)
+        int valor = stoi(texto, &usados); // O(1)
 
-        if (usados != texto.length()) {
-            throw invalid_argument(texto);
+        if (usados != texto.length()) { // O(1)
+            throw invalid_argument(texto); // O(1)
         }
 
-        return valor;
+        return valor; // O(1)
     }
 
     // Convierte texto a decimal
-    double aDecimal(string texto) {
+    // Mejor, promedio y peor caso: O(1)
+    // Espacio: O(1)
+    double aDecimal(string texto) { // O(1)
 
-        for (unsigned int i = 0; i < texto.length(); i++) {
-            if (texto[i] == ',') {
-                texto[i] = '.';
+        for (unsigned int i = 0; i < texto.length(); i++) { // O(1), el texto es corto
+            if (texto[i] == ',') { // O(1)
+                texto[i] = '.'; // O(1)
             }
         }
 
-        size_t usados = 0;
-        double valor = stod(texto, &usados);
+        size_t usados = 0; // O(1)
+        double valor = stod(texto, &usados); // O(1)
 
-        if (usados != texto.length()) {
-            throw invalid_argument(texto);
+        if (usados != texto.length()) { // O(1)
+            throw invalid_argument(texto); // O(1)
         }
 
-        return valor;
+        return valor; // O(1)
     }
 
     // Abre el archivo y salta la linea de encabezado.
     // Regresa false si el archivo no existe o no se puede abrir.
-    bool abrirArchivo(ifstream &archivo, const string &ruta) {
+    // Mejor, promedio y peor caso: O(1)
+    // Espacio: O(1)
+    bool abrirArchivo(ifstream &archivo, const string &ruta) { // O(1)
 
-        archivo.open(ruta);
+        archivo.open(ruta); // O(1)
 
-        if (!archivo.is_open()) {
-            cout << "  No se pudo abrir el archivo: " << ruta << endl;
-            return false;
+        if (!archivo.is_open()) { // O(1)
+            cout << "  No se pudo abrir el archivo: " << ruta << endl; // O(1)
+            return false; // O(1)
         }
 
-        string encabezado;
-        getline(archivo, encabezado);
+        string encabezado; // O(1)
+        getline(archivo, encabezado); // O(1)
 
-        return true;
+        return true; // O(1)
     }
 
-    void reportarError(const string &ruta, int numLinea, const string &motivo) {
-        cout << "  [" << ruta << ", linea " << numLinea << "] "
+    // Mejor, promedio y peor caso: O(1)
+    // Espacio: O(1)
+    void reportarError(const string &ruta, int numLinea, const string &motivo) { // O(1)
+        cout << "  [" << ruta << ", linea " << numLinea << "] " // O(1)
              << motivo << ". Se omite la linea.\n";
     }
 
     // Busqueda secuencial.
-    Categoria* buscarCategoria(int id) {
+    // Mejor caso: O(1)  (el elemento esta en la primera posicion)
+    // Caso promedio: O(n)
+    // Peor caso: O(n)  (no existe o esta en la ultima posicion)
+    // Espacio: O(1)
+    Categoria* buscarCategoria(int id) { // O(n)
 
-        for (unsigned int i = 0; i < categorias.length(); i++) {
+        for (unsigned int i = 0; i < categorias.length(); i++) { // O(n)
 
-            if (categorias[i].getId() == id) {
-                return &categorias[i];
+            if (categorias[i].getId() == id) { // O(1)
+                return &categorias[i]; // O(1)
             }
         }
 
-        return nullptr;
+        return nullptr; // O(1)
     }
 
     // Busqueda secuencial por nombre.
-    Usuario* buscarUsuarioPorNombre(const string &nombre) {
+    // Mejor caso: O(1)  (el elemento esta en la primera posicion)
+    // Caso promedio: O(n)
+    // Peor caso: O(n)  (no existe o esta en la ultima posicion)
+    // Espacio: O(1)
+    Usuario* buscarUsuarioPorNombre(const string &nombre) { // O(n)
 
-        for (unsigned int i = 0; i < usuarios.length(); i++) {
+        for (unsigned int i = 0; i < usuarios.length(); i++) { // O(n)
 
-            if (usuarios[i].getNombre() == nombre) {
-                return &usuarios[i];
+            if (usuarios[i].getNombre() == nombre) { // O(1)
+                return &usuarios[i]; // O(1)
             }
         }
 
-        return nullptr;
+        return nullptr; // O(1)
     }
 
     // Formato: id;nombre
-    int cargarCategorias(const string &ruta) {
+    // Mejor, promedio y peor caso: O(n^2) 
+    // Espacio: O(n)
+    int cargarCategorias(const string &ruta) { // O(n^2)
 
-        ifstream archivo;
+        ifstream archivo; // O(1)
 
-        if (!abrirArchivo(archivo, ruta)) {
-            return 0;
+        if (!abrirArchivo(archivo, ruta)) { // O(1)
+            return 0; // O(1)
         }
 
-        string linea;
-        int numLinea = 1;
-        int cargados = 0;
+        string linea; // O(1)
+        int numLinea = 1; // O(1)
+        int cargados = 0; // O(1)
 
-        while (getline(archivo, linea)) {
+        while (getline(archivo, linea)) { // O(n)
 
-            numLinea++;
+            numLinea++; // O(1)
 
-            if (limpiar(linea).empty()) {
-                continue;
+            if (limpiar(linea).empty()) { // O(1)
+                continue; // O(1)
             }
 
-            Vector<string> campos = separar(linea, 2);
+            Vector<string> campos = separar(linea, 2); // O(1)
 
-            if (campos.length() != 2 || campos[1].empty()) {
-                reportarError(ruta, numLinea, "se esperaba id;nombre");
-                continue;
+            if (campos.length() != 2 || campos[1].empty()) { // O(1)
+                reportarError(ruta, numLinea, "se esperaba id;nombre"); // O(1)
+                continue; // O(1)
             }
 
             try {
-                int id = aEntero(campos[0]);
+                int id = aEntero(campos[0]); // O(1)
 
-                if (buscarCategoria(id) != nullptr) {
-                    reportarError(ruta, numLinea, "id de categoria repetido");
-                    continue;
+                if (buscarCategoria(id) != nullptr) { // O(n)
+                    reportarError(ruta, numLinea, "id de categoria repetido"); // O(1)
+                    continue; // O(1)
                 }
 
-                categorias.push_back(Categoria(id, campos[1]));
-                cargados++;
+                categorias.push_back(Categoria(id, campos[1])); // O(1) 
+                cargados++; // O(1)
 
             } catch (const exception &) {
-                reportarError(ruta, numLinea, "id no es un numero valido");
+                reportarError(ruta, numLinea, "id no es un numero valido"); // O(1)
             }
         }
 
-        archivo.close();
+        archivo.close(); // O(1)
 
-        return cargados;
+        return cargados; // O(1)
     }
 
     // Formato: id;nombre
-    int cargarUsuarios(const string &ruta) {
+    // Mejor, promedio y peor caso: O(n^2) 
+    // Espacio: O(n)  
+    int cargarUsuarios(const string &ruta) { // O(n^2)
 
-        ifstream archivo;
+        ifstream archivo; // O(1)
 
-        if (!abrirArchivo(archivo, ruta)) {
-            return 0;
+        if (!abrirArchivo(archivo, ruta)) { // O(1)
+            return 0; // O(1)
         }
 
-        string linea;
-        int numLinea = 1;
-        int cargados = 0;
+        string linea; // O(1)
+        int numLinea = 1; // O(1)
+        int cargados = 0; // O(1)
 
-        while (getline(archivo, linea)) {
+        while (getline(archivo, linea)) { // O(n)
 
-            numLinea++;
+            numLinea++; // O(1)
 
-            if (limpiar(linea).empty()) {
-                continue;
+            if (limpiar(linea).empty()) { // O(1)
+                continue; // O(1)
             }
 
-            Vector<string> campos = separar(linea, 2);
+            Vector<string> campos = separar(linea, 2); // O(1)
 
-            if (campos.length() != 2 || campos[1].empty()) {
-                reportarError(ruta, numLinea, "se esperaba id;nombre");
-                continue;
+            if (campos.length() != 2 || campos[1].empty()) { // O(1)
+                reportarError(ruta, numLinea, "se esperaba id;nombre"); // O(1)
+                continue; // O(1)
             }
 
             try {
-                int id = aEntero(campos[0]);
+                int id = aEntero(campos[0]); // O(1)
 
-                if (buscarUsuario(id) != nullptr) {
-                    reportarError(ruta, numLinea, "id de usuario repetido");
-                    continue;
+                if (buscarUsuario(id) != nullptr) { // O(n)
+                    reportarError(ruta, numLinea, "id de usuario repetido"); // O(1)
+                    continue; // O(1)
                 }
 
-                usuarios.push_back(Usuario(id, campos[1]));
-                cargados++;
+                usuarios.push_back(Usuario(id, campos[1])); // O(1)  
+                cargados++; // O(1)
 
             } catch (const exception &) {
-                reportarError(ruta, numLinea, "id no es un numero valido");
+                reportarError(ruta, numLinea, "id no es un numero valido"); // O(1)
             }
         }
 
-        archivo.close();
+        archivo.close(); // O(1)
 
-        return cargados;
+        return cargados; // O(1)
     }
 
     // Formato:
     // id;titulo;idCategoria;anio;calificacion;numeroCalificaciones;numeroResenas
-    int cargarPeliculas(const string &ruta) {
+    // Mejor, promedio y peor caso: O(n^2) 
+    // Espacio: O(n) 
+    int cargarPeliculas(const string &ruta) { // O(n^2)
 
-        ifstream archivo;
+        ifstream archivo; // O(1)
 
-        if (!abrirArchivo(archivo, ruta)) {
-            return 0;
+        if (!abrirArchivo(archivo, ruta)) { // O(1)
+            return 0; // O(1)
         }
 
-        string linea;
-        int numLinea = 1;
-        int cargados = 0;
+        string linea; // O(1)
+        int numLinea = 1; // O(1)
+        int cargados = 0; // O(1)
 
-        while (getline(archivo, linea)) {
+        while (getline(archivo, linea)) { // O(n)
 
-            numLinea++;
+            numLinea++; // O(1)
 
-            if (limpiar(linea).empty()) {
-                continue;
+            if (limpiar(linea).empty()) { // O(1)
+                continue; // O(1)
             }
 
-            Vector<string> campos = separar(linea, 7);
+            Vector<string> campos = separar(linea, 7); // O(1)
 
-            if (campos.length() != 7 || campos[1].empty()) {
-                reportarError(ruta, numLinea, "se esperaban 7 campos");
-                continue;
+            if (campos.length() != 7 || campos[1].empty()) { // O(1)
+                reportarError(ruta, numLinea, "se esperaban 7 campos"); // O(1)
+                continue; // O(1)
             }
 
             try {
-                int id = aEntero(campos[0]);
-                int idCategoria = aEntero(campos[2]);
-                int anio = aEntero(campos[3]);
-                double calificacion = aDecimal(campos[4]);
-                int numeroCalificaciones = aEntero(campos[5]);
-                int numeroResenas = aEntero(campos[6]);
+                int id = aEntero(campos[0]); // O(1)
+                int idCategoria = aEntero(campos[2]); // O(1)
+                int anio = aEntero(campos[3]); // O(1)
+                double calificacion = aDecimal(campos[4]); // O(1)
+                int numeroCalificaciones = aEntero(campos[5]); // O(1)
+                int numeroResenas = aEntero(campos[6]); // O(1)
 
-                if (buscarPorId(id) != nullptr) {
-                    reportarError(ruta, numLinea, "id de pelicula repetido");
-                    continue;
+                if (buscarPorId(id) != nullptr) { // O(n)
+                    reportarError(ruta, numLinea, "id de pelicula repetido"); // O(1)
+                    continue; // O(1)
                 }
 
-                Categoria* categoria = buscarCategoria(idCategoria);
+                Categoria* categoria = buscarCategoria(idCategoria); // O(n)
 
-                if (categoria == nullptr) {
-                    reportarError(ruta, numLinea, "la categoria no existe");
-                    continue;
+                if (categoria == nullptr) { // O(1)
+                    reportarError(ruta, numLinea, "la categoria no existe"); // O(1)
+                    continue; // O(1)
                 }
 
-                if (calificacion < 0 || calificacion > 5 ||
+                if (calificacion < 0 || calificacion > 5 || // O(1)
                     numeroCalificaciones < 0 || numeroResenas < 0) {
-                    reportarError(ruta, numLinea, "valores fuera de rango");
-                    continue;
+                    reportarError(ruta, numLinea, "valores fuera de rango"); // O(1)
+                    continue; // O(1)
                 }
 
-                peliculas.push_back(
+                peliculas.push_back( // O(1)  
                     Pelicula(
                         id,
                         campos[1],
@@ -873,80 +974,76 @@ private:
                         numeroResenas
                     )
                 );
-                cargados++;
+                cargados++; // O(1)
 
             } catch (const exception &) {
-                reportarError(ruta, numLinea, "algun dato numerico no es valido");
+                reportarError(ruta, numLinea, "algun dato numerico no es valido"); // O(1)
             }
         }
 
-        archivo.close();
+        archivo.close(); // O(1)
 
-        return cargados;
+        return cargados; // O(1)
     }
 
     // Formato: usuario;idPelicula;calificacion;likes;contenido
     // El id de cada resena se asigna en orden (1, 2, 3, ...) 
-    int cargarResenas(const string &ruta) {
+    // Mejor, promedio y peor caso: O(n^2)  
+    // Espacio: O(n) 
+    int cargarResenas(const string &ruta) { // O(n^2)
 
-        ifstream archivo;
+        ifstream archivo; // O(1)
 
-        if (!abrirArchivo(archivo, ruta)) {
-            return 0;
+        if (!abrirArchivo(archivo, ruta)) { // O(1)
+            return 0; // O(1)
         }
 
-        string linea;
-        int numLinea = 1;
-        int cargados = 0;
+        string linea; // O(1)
+        int numLinea = 1; // O(1)
+        int cargados = 0; // O(1)
 
-        while (getline(archivo, linea)) {
+        while (getline(archivo, linea)) { // O(n)
 
-            numLinea++;
+            numLinea++; // O(1)
 
-            if (limpiar(linea).empty()) {
-                continue;
+            if (limpiar(linea).empty()) { // O(1)
+                continue; // O(1)
             }
 
-            Vector<string> campos = separar(linea, 5);
+            Vector<string> campos = separar(linea, 5); // O(1)
 
-            if (campos.length() != 5 || campos[4].empty()) {
-                reportarError(ruta, numLinea, "se esperaban 5 campos");
-                continue;
+            if (campos.length() != 5 || campos[4].empty()) { // O(1)
+                reportarError(ruta, numLinea, "se esperaban 5 campos"); // O(1)
+                continue; // O(1)
             }
 
             try {
-                int idPelicula = aEntero(campos[1]);
-                int calificacion = aEntero(campos[2]);
-                int likes = aEntero(campos[3]);
+                int idPelicula = aEntero(campos[1]); // O(1)
+                int calificacion = aEntero(campos[2]); // O(1)
+                int likes = aEntero(campos[3]); // O(1)
 
-                Usuario* usuario = buscarUsuarioPorNombre(campos[0]);
+                Usuario* usuario = buscarUsuarioPorNombre(campos[0]); // O(n)
 
-                if (usuario == nullptr) {
-                    reportarError(ruta, numLinea, "el usuario no existe");
-                    continue;
+                if (usuario == nullptr) { // O(1)
+                    reportarError(ruta, numLinea, "el usuario no existe"); // O(1)
+                    continue; // O(1)
                 }
 
-                if (buscarPorId(idPelicula) == nullptr) {
-                    reportarError(ruta, numLinea, "la pelicula no existe");
-                    continue;
+                if (buscarPorId(idPelicula) == nullptr) { // O(n)
+                    reportarError(ruta, numLinea, "la pelicula no existe"); // O(1)
+                    continue; // O(1)
                 }
 
-                if (calificacion < 1 || calificacion > 5 || likes < 0) {
-                    reportarError(ruta, numLinea, "valores fuera de rango");
-                    continue;
+                if (calificacion < 1 || calificacion > 5 || likes < 0) { // O(1)
+                    reportarError(ruta, numLinea, "valores fuera de rango"); // O(1)
+                    continue; // O(1)
                 }
 
                 // La pelicula tambien queda en el historial del usuario
-                // (push a su StackVector).
-                try {
-                    usuario->registrarCalificacion(idPelicula);
-                } catch (Overflow &) {
-                    reportarError(ruta, numLinea,
-                                  "el usuario alcanzo el limite de calificaciones");
-                    continue;
-                }
+                // (push a su StackList).
+                usuario->registrarCalificacion(idPelicula); // O(1)
 
-                resenas.push_back(
+                resenas.push_back( // O(1)  
                     Resena(
                         siguienteIdResena++,
                         campos[4],
@@ -956,16 +1053,200 @@ private:
                         likes
                     )
                 );
-                cargados++;
+                cargados++; // O(1)
 
             } catch (const exception &) {
-                reportarError(ruta, numLinea, "algun dato numerico no es valido");
+                reportarError(ruta, numLinea, "algun dato numerico no es valido"); // O(1)
             }
         }
 
-        archivo.close();
+        archivo.close(); // O(1)
 
-        return cargados;
+        return cargados; // O(1)
+    }
+
+    // ========================================================
+    // ESCRITURA DE ARCHIVOS
+    // ========================================================
+
+    // Al salir pregunta si se quieren guardar los cambios.
+    // Mejor caso: O(1)  (el usuario responde que no)
+    // Peor caso: O(n)  (se guardan los datos)
+    // Espacio: O(1)
+    void preguntarGuardarAlSalir() { // O(n)
+
+        char respuesta = 'n'; // O(1)
+
+        cout << "\nDeseas guardar los cambios antes de salir? (s/n): "; // O(1)
+        cin >> respuesta; // O(1)
+
+        if (respuesta == 's' || respuesta == 'S') { // O(1)
+            guardarDatos(carpetaDatos); // O(n)
+        }
+    }
+
+    // Abre el archivo temporal (ruta + ".tmp") donde se va a escribir.
+    // Mejor, promedio y peor caso: O(1)
+    // Espacio: O(1)
+    bool abrirArchivoEscritura(ofstream &archivo, const string &ruta) { // O(1)
+
+        archivo.open((ruta + ".tmp").c_str()); // O(1)
+
+        if (!archivo.is_open()) { // O(1)
+            cout << "  No se pudo crear el archivo: " << ruta << endl; // O(1)
+            return false; // O(1)
+        }
+
+        return true; // O(1)
+    }
+
+    // Cierra el temporal y, si todo se escribio bien, reemplaza el
+    // archivo original por el temporal.
+    // Mejor, promedio y peor caso: O(1)
+    // Espacio: O(1)
+    bool cerrarArchivoEscritura(ofstream &archivo, const string &ruta) { // O(1)
+
+        bool correcto = archivo.good(); // O(1)
+        archivo.close(); // O(1)
+
+        string temporal = ruta + ".tmp"; // O(1)
+
+        if (!correcto) { // O(1)
+            remove(temporal.c_str()); // O(1)
+            cout << "  Error al escribir el archivo: " << ruta << endl; // O(1)
+            return false; // O(1)
+        }
+
+        remove(ruta.c_str()); // O(1)
+
+        if (rename(temporal.c_str(), ruta.c_str()) != 0) { // O(1)
+            cout << "  No se pudo reemplazar el archivo: " << ruta // O(1)
+                 << " (los datos quedaron en " << temporal << ")\n";
+            return false; // O(1)
+        }
+
+        return true; // O(1)
+    }
+
+    // Formato: id;nombre
+    // Regresa cuantos registros escribio, o -1 si hubo un error.
+    // Mejor, promedio y peor caso: O(n)
+    // Espacio: O(1)
+    int guardarCategorias(const string &ruta) { // O(n)
+
+        ofstream archivo; // O(1)
+
+        if (!abrirArchivoEscritura(archivo, ruta)) { // O(1)
+            return -1; // O(1)
+        }
+
+        archivo << "id;nombre\n"; // O(1)
+
+        for (unsigned int i = 0; i < categorias.length(); i++) { // O(n)
+
+            archivo << categorias[i].getId() << ';' // O(1)
+                    << categorias[i].getNombre() << '\n';
+        }
+
+        if (!cerrarArchivoEscritura(archivo, ruta)) { // O(1)
+            return -1; // O(1)
+        }
+
+        return categorias.length(); // O(1)
+    }
+
+    // Formato: id;nombre
+    // El historial (StackList) de cada usuario no se guarda aparte: se
+    // reconstruye al cargar resenas.csv, porque cada resena registra la
+    // pelicula en el historial de su usuario.
+    // Mejor, promedio y peor caso: O(n)
+    // Espacio: O(1)
+    int guardarUsuarios(const string &ruta) { // O(n)
+
+        ofstream archivo; // O(1)
+
+        if (!abrirArchivoEscritura(archivo, ruta)) { // O(1)
+            return -1; // O(1)
+        }
+
+        archivo << "id;nombre\n"; // O(1)
+
+        for (unsigned int i = 0; i < usuarios.length(); i++) { // O(n)
+
+            archivo << usuarios[i].getId() << ';' // O(1)
+                    << usuarios[i].getNombre() << '\n';
+        }
+
+        if (!cerrarArchivoEscritura(archivo, ruta)) { // O(1)
+            return -1; // O(1)
+        }
+
+        return usuarios.length(); // O(1)
+    }
+
+    // Formato:
+    // id;titulo;idCategoria;anio;calificacion;numeroCalificaciones;numeroResenas
+    // Mejor, promedio y peor caso: O(n)
+    // Espacio: O(1)
+    int guardarPeliculas(const string &ruta) { // O(n)
+
+        ofstream archivo; // O(1)
+
+        if (!abrirArchivoEscritura(archivo, ruta)) { // O(1)
+            return -1; // O(1)
+        }
+
+        archivo << "id;titulo;idCategoria;anio;calificacion;" // O(1)
+                << "numeroCalificaciones;numeroResenas\n";
+
+        // 15 cifras para no perder precision en el promedio al recargarlo.
+        archivo << setprecision(15); // O(1)
+
+        for (unsigned int i = 0; i < peliculas.length(); i++) { // O(n)
+
+            archivo << peliculas[i].getId() << ';' // O(1)
+                    << peliculas[i].getTitulo() << ';'
+                    << peliculas[i].getIdCategoria() << ';'
+                    << peliculas[i].getAnio() << ';'
+                    << peliculas[i].getCalificacion() << ';'
+                    << peliculas[i].getNumeroCalificaciones() << ';'
+                    << peliculas[i].getNumeroResenas() << '\n';
+        }
+
+        if (!cerrarArchivoEscritura(archivo, ruta)) { // O(1)
+            return -1; // O(1)
+        }
+
+        return peliculas.length(); // O(1)
+    }
+
+    // Formato: usuario;idPelicula;calificacion;likes;contenido
+    // Mejor, promedio y peor caso: O(n)
+    // Espacio: O(1)
+    int guardarResenas(const string &ruta) { // O(n)
+
+        ofstream archivo; // O(1)
+
+        if (!abrirArchivoEscritura(archivo, ruta)) { // O(1)
+            return -1; // O(1)
+        }
+
+        archivo << "usuario;idPelicula;calificacion;likes;contenido\n"; // O(1)
+
+        for (unsigned int i = 0; i < resenas.length(); i++) { // O(n)
+
+            archivo << resenas[i].getNombreUsuario() << ';' // O(1)
+                    << resenas[i].getIdPelicula() << ';'
+                    << resenas[i].getCalificacion() << ';'
+                    << resenas[i].getLikes() << ';'
+                    << resenas[i].getContenido() << '\n';
+        }
+
+        if (!cerrarArchivoEscritura(archivo, ruta)) { // O(1)
+            return -1; // O(1)
+        }
+
+        return resenas.length(); // O(1)
     }
 };
 #endif
